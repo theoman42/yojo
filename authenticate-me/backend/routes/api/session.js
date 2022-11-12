@@ -6,20 +6,20 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
 const validateLogin = [
-  check("email")
+  check("username")
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage("Please provide a valid email"),
+    .withMessage("Please provide a valid username"),
   check("password")
     .exists({ checkFalsy: true })
     .withMessage("Please provide a password."),
   handleValidationErrors,
 ];
 
-router.post("/", validateLogin, async (req, res, next) => {
-  const { email, password } = req.body;
+router.post("/", async (req, res, next) => {
+  const { username, password } = req.body;
 
-  const user = await User.login({ email, password });
+  const user = await User.login({ username, password });
 
   if (!user) {
     const err = new Error("Login failed");
